@@ -64,16 +64,11 @@ stages:
             displayName: Deploy to Kubernetes cluster
             inputs:
               action: deploy
-              connectionType: azureResourceManager
-              azureSubscriptionConnection: 'Kubernetes Cluster Connection'
-              azureResourceGroup: 'aks-rg'
-              kubernetesCluster: 'k8s-australiaeast'
+              kubernetesServiceConnection: 'Kubernetes Cluster Connection'
               namespace: 'default'
               manifests: |
                 $(Pipeline.Workspace)/manifests/deployment.yml
                 $(Pipeline.Workspace)/manifests/service.yml
-              imagePullSecrets: |
-                $(imagePullSecret)
               containers: |
                 $(RegistryName)/$(webRepository):$(tag)
                 $(RegistryName)/$(leaderboardRepository):$(tag)
