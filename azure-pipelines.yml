@@ -59,17 +59,6 @@ stages:
           steps:
           - download: current
             artifact: manifests
-          - task: KubernetesManifest@0
-            displayName: Create imagePullSecret
-            inputs:
-              action: createSecret
-              connectionType: azureResourceManager
-              secretName: $(imagePullSecret)
-              dockerRegistryEndpoint: 'Container Registry Connection'
-              azureSubscriptionConnection: 'Kubernetes Cluster Connection'
-              azureResourceGroup: 'aks-rg'
-              kubernetesCluster: 'k8s-australiaeast'
-              namespace: 'default'
 
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
