@@ -60,7 +60,7 @@ stages:
           - download: current
             artifact: manifests
 
-          - task: KubernetesManifest@0
+          - task: KubernetesManifest
             displayName: Deploy to Kubernetes cluster
             inputs:
               action: deploy
