@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: azurecr9001.azurecr.io/web:49
+          image: azurecr9001.azurecr.io/web
           ports:
           - containerPort: 80
 ---
@@ -34,6 +34,6 @@ spec:
     spec:
       containers:
         - name: leaderboard
-          image: azurecr9001.azurecr.io/leaderboard:49
+          image: azurecr9001.azurecr.io/leaderboard
           ports:
           - containerPort: 80
