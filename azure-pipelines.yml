@@ -60,7 +60,7 @@ stages:
           - download: current
             artifact: manifests
 
-          - task: KubernetesManifest
+          - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
             inputs:
               action: deploy
@@ -72,3 +72,5 @@ stages:
               containers: |
                 $(RegistryName)/$(webRepository):$(tag)
                 $(RegistryName)/$(leaderboardRepository):$(tag)
+              imagePullSecrets: |
+                $(imagePullSecret)
