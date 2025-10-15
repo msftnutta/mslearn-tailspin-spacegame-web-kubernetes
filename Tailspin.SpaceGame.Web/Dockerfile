@@ -4,15 +4,12 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
+COPY ["Tailspin.SpaceGame.Web/Tailspin.SpaceGame.Web.csproj", "Tailspin.SpaceGame.Web/"]
 
-# Copy project file
-COPY Tailspin.SpaceGame.Web/Tailspin.SpaceGame.Web.csproj Tailspin.SpaceGame.Web/
-RUN dotnet restore Tailspin.SpaceGame.Web/Tailspin.SpaceGame.Web.csproj
-
-# Copy all source code
+RUN dotnet restore "Tailspin.SpaceGame.Web/Tailspin.SpaceGame.Web.csproj"
 COPY . .
-WORKDIR /src/Tailspin.SpaceGame.Web
-RUN dotnet build Tailspin.SpaceGame.Web.csproj -c Release -o /app/build
+WORKDIR "/src/Tailspin.SpaceGame.Web"
+RUN dotnet build "Tailspin.SpaceGame.Web.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "Tailspin.SpaceGame.Web.csproj" -c Release -o /app/publish
