@@ -1,7 +1,10 @@
-apiVersion : apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web
+  labels:
+    app: web
+    component: frontend
 spec:
   replicas: 1
   selector:
@@ -11,17 +14,49 @@ spec:
     metadata:
       labels:
         app: web
+        component: frontend
     spec:
       containers:
         - name: web
           image: azurecr9001.azurecr.io/web
           ports:
           - containerPort: 80
+          env:
+          - name: ASPNETCORE_URLS
+            value: "http://0.0.0.0:80"
+          - name: ASPNETCORE_ENVIRONMENT
+            value: "Production"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
 ---
-apiVersion : apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: leaderboard
+  labels:
+    app: leaderboard
+    component: api
 spec:
   replicas: 1
   selector:
@@ -31,9 +66,38 @@ spec:
     metadata:
       labels:
         app: leaderboard
+        component: api
     spec:
       containers:
         - name: leaderboard
           image: azurecr9001.azurecr.io/leaderboard
           ports:
           - containerPort: 80
+          env:
+          - name: ASPNETCORE_URLS
+            value: "http://0.0.0.0:80"
+          - name: ASPNETCORE_ENVIRONMENT
+            value: "Production"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /api/Leaderboard
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /api/Leaderboard
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3

@@ -2,20 +2,54 @@ apiVersion: v1
 kind: Service
 metadata:
     name: leaderboard
+    labels:
+      app: leaderboard
+      component: api
+      version: v1
 spec:
     type: LoadBalancer
     ports:
-    - port: 80 
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
     selector:
         app: leaderboard
+    sessionAffinity: None
+    # Uncomment the following for cloud-specific LoadBalancer configurations
+    # For Azure AKS:
+    # annotations:
+    #   service.beta.kubernetes.io/azure-load-balancer-internal: "false"
+    #   service.beta.kubernetes.io/azure-dns-label-name: "tailspin-leaderboard"
+    # For AWS EKS:
+    # annotations:
+    #   service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    #   service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
 ---
 apiVersion: v1
 kind: Service
 metadata:
     name: web
+    labels:
+      app: web
+      component: frontend
+      version: v1
 spec:
     type: LoadBalancer
     ports:
-    - port: 80 
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
     selector:
         app: web
+    sessionAffinity: None
+    # Uncomment the following for cloud-specific LoadBalancer configurations
+    # For Azure AKS:
+    # annotations:
+    #   service.beta.kubernetes.io/azure-load-balancer-internal: "false"
+    #   service.beta.kubernetes.io/azure-dns-label-name: "tailspin-web"
+    # For AWS EKS:
+    # annotations:
+    #   service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    #   service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
